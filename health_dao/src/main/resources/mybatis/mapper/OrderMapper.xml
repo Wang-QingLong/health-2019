@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置接口dao的全限定类名-->
+<mapper namespace="com.itcast.mapper.OrderMapper">
+    <!--新增预约信息-->
+    <insert id="add">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into
+        t_order
+        (member_id,orderDate,orderType,orderStatus,setmeal_id)
+        values
+        (#{memberId},#{orderDate},#{orderType},#{orderStatus},#{setmealId})
+    </insert>
+
+    <!--查询预约信息-->
+    <select id="findByCondition" resultType="com.itcast.pojo.Order">
+        select * from t_order
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="memberId != null">
+                and member_id = #{memberId}
+            </if>
+            <if test="orderDate != null">
+                and orderDate = #{orderDate}
+            </if>
+            <if test="orderType != null">
+                and orderType = #{orderType}
+            </if>
+            <if test="orderStatus != null">
+                and orderStatus = #{orderStatus}
+            </if>
+            <if test="setmealId != null">
+                and setmeal_id = #{setmealId}
+            </if>
+        </where>
+
+    </select>
+    <!--根据order_id查询套餐的Id-->
+    <select id="findSetmealIdById" resultType="com.itcast.pojo.Setmeal">
+        SELECT
+	s.*
+   FROM
+	t_setmeal s
+	LEFT JOIN t_order o ON o.setmeal_id = s.id
+  WHERE
+	o.id = #{id}
+    </select>
+    <!--根据Id查询数据-->
+    <select id="findOrderById" resultType="com.itcast.pojo.Order">
+        select * from t_order where id=#{id}
+    </select>
+<!--根据Id查询member表当中体检人name-->
+    <select id="findNameById" resultType="java.lang.String">
+        SELECT
+	m.toname
+ FROM
+	t_order o
+	LEFT JOIN t_member m ON m.id = o.member_id
+ WHERE
+	o.id = #{id};
+    </select>
+</mapper>

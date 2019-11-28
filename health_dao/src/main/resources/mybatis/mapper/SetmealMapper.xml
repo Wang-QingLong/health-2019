@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置接口dao的全限定类名-->
+<mapper namespace="com.itcast.mapper.SetmealMapper">
+    <!--添加数据到t_setmeal表当中-->
+    <insert id="add">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO t_setmeal ( name, code, helpCode, sex, age, price, remark, attention, img ,sid)
+        VALUES
+        ( #{name}, #{code}, #{helpCode}, #{sex}, #{age}, #{price}, #{remark}, #{attention}, #{img},0);
+    </insert>
+
+    <!--建立检查组表与套餐表之间关联关系，往中间表t_setmeal_checkgroup添加数据-->
+    <insert id="setCheckGroupAndCheckItem">
+        insert into t_setmeal_checkgroup(setmeal_id,checkgroup_id) values
+
+        <foreach collection="maps" item="map" separator=",">
+            (#{map.setmeal_id},#{map.checkgroup_id})
+        </foreach>
+    </insert>
+    <!--更新套餐表格数据-->
+    <update id="Update">
+        update t_setmeal
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="helpCode != null">
+                helpCode = #{helpCode},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="age != null">
+                age = #{age},
+            </if>
+            <if test="price != null">
+                price = #{price},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+            <if test="img != null">
+                img = #{img},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <!--根据套餐Id删除关联-->
+    <delete id="deleteAssociation">
+ delete from t_setmeal_checkgroup where setmeal_id = #{id}
+    </delete>
+    <!--逻辑删除套餐数据:改变显示的状态-->
+    <update id="delete">
+        update t_setmeal set sid =1 where id=#{id}
+    </update>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="com.itcast.pojo.Setmeal">
+        select * from t_setmeal where
+        <if test="queryString !=null and queryString.trim().length > 0">
+            code like '%' #{queryString} '%'
+            or name like '%' #{queryString} '%'
+            or helpCode like '%' #{queryString} '%'
+            and
+        </if>
+        sid=0
+    </select>
+    <!--Id查询套餐表数据-->
+    <select id="findSetmealById" resultType="com.itcast.pojo.Setmeal">
+        SELECT
+	*
+  FROM
+	t_setmeal
+  WHERE
+	 id = #{id}
+	 AND sid = 0;
+    </select>
+    <!--Id查询中间表t_setmeal_checkgroup数据-->
+    <select id="findCheckGroupIdsById" resultType="java.lang.Integer">
+        SELECT
+	 checkgroup_id
+    FROM
+ 	t_setmeal_checkgroup
+    WHERE
+	setmeal_id = #{id};
+    </select>
+
+    <!--查询中间表引用关系-->
+    <select id="findCountById" resultType="java.lang.Integer">
+        SELECT
+	 count(*)
+    FROM
+ 	t_setmeal_checkgroup
+    WHERE
+	setmeal_id = #{id};
+    </select>
+    <!-- 查询所有-->
+    <select id="findAll" resultType="com.itcast.pojo.Setmeal">
+        select * from t_setmeal where  sid=0
+    </select>
+    <!--根据套餐Id查询所有的检查组-->
+    <select id="findCheckGroupsBySetmealId" resultType="com.itcast.pojo.CheckGroup">
+         select id,name,remark from t_checkgroup where id in (select checkgroup_id from t_setmeal_checkgroup where setmeal_id = #{id})
+    </select>
+
+    <!--根据所有的检查组Ids查询检查项的数据-->
+    <select id="findCheckItemsByCheckGroupIds" resultType="com.itcast.pojo.CheckItem">
+
+        select ck.*,cck.checkgroup_id checkgroupId from t_checkgroup_checkitem cck left join  t_checkitem ck on
+        cck.checkitem_id = ck.id
+        where cck.checkgroup_id in
+        <foreach collection="ids" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>

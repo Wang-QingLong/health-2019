@@ -1,0 +1,147 @@
+如何使用定时器定时清理图片，加上redis配合使用
+第一步：单独创建一个工程 war包
+第二步：导入定时器依赖
+ <!--定时器-->
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.quartz-scheduler</groupId>
+            <artifactId>quartz-jobs</artifactId>
+        </dependency>
+以及导入service接口
+<!--引入接口-->
+        <dependency>
+            <groupId>com.ooo</groupId>
+            <artifactId>health_interface</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+以及导入
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
+    </properties>
+插件
+ <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <configuration>
+                    <!-- 指定端口 -->
+                    <port>83</port>
+                    <!-- 请求路径 -->
+                    <path>/</path>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+在web模块当中，写配置文件，简单来说哪里需要用到redis哪里就需要写
+spring-redis 当然不要忘记了在web配置文件中配置是扫描，让spring认识他
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans 
+                         http://www.springframework.org/schema/beans/spring-beans.xsd
+        				http://www.springframework.org/schema/mvc 
+                         http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        				http://code.alibabatech.com/schema/dubbo 
+                         http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        				http://www.springframework.org/schema/context 
+                         http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--Jedis连接池的相关配置-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal">
+            <value>200</value>
+        </property>
+        <property name="maxIdle">
+            <value>50</value>
+        </property>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testOnReturn" value="true"/>
+    </bean>
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig"/>
+        <constructor-arg name="host" value="127.0.0.1"/>
+        <constructor-arg name="port" value="6379" type="int"/>
+        <constructor-arg name="timeout" value="30000" type="int"/>
+    </bean>
+</beans>
+
+
+在web模块下，获取上传至七牛云的图片，将图片添加到redis
+ @Autowired
+    private JedisPool jedisPool;
+
+
+ 将上传图片名称存入Redis，基于Redis的Set集合存储
+ jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_RESOURCES,fileName);
+
+
+------------------------------------------------------------
+然后在service模块当中，写配置文件
+applicationContext-redis.xml
+内容如下
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:p="http://www.springframework.org/schema/p"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+                         http://www.springframework.org/schema/beans/spring-beans.xsd
+        				http://www.springframework.org/schema/mvc
+                         http://www.springframework.org/schema/mvc/spring-mvc.xsd
+        				http://code.alibabatech.com/schema/dubbo
+                         http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+        				http://www.springframework.org/schema/context
+                         http://www.springframework.org/schema/context/spring-context.xsd">
+
+    <!--Jedis连接池的相关配置-->
+    <bean id="jedisPoolConfig" class="redis.clients.jedis.JedisPoolConfig">
+        <property name="maxTotal">
+            <value>200</value>
+        </property>
+        <property name="maxIdle">
+            <value>50</value>
+        </property>
+        <property name="testOnBorrow" value="true"/>
+        <property name="testOnReturn" value="true"/>
+    </bean>
+    <bean id="jedisPool" class="redis.clients.jedis.JedisPool">
+        <constructor-arg name="poolConfig" ref="jedisPoolConfig" />
+        <constructor-arg name="host" value="127.0.0.1" />
+        <constructor-arg name="port" value="6379" type="int" />
+        <constructor-arg name="timeout" value="30000" type="int" />
+    </bean>
+</beans>
+
+创建一个redis常量类：
+
+public class RedisConstant {
+    //套餐图片所有图片名称
+    public static final String SETMEAL_PIC_RESOURCES = "setmealPicResources";
+    //套餐图片保存在数据库中的图片名称
+    public static final String SETMEAL_PIC_DB_RESOURCES = "setmealPicDbResources";
+}
+
+在service模块下，获取前台传过来的图片方法中，将图片添加到redis
+取:
+ @Autowired
+     private JedisPool jedisPool;
+
+保存到redis的方法
+  private void savePic2Redis(String pic) {
+        jedisPool.getResource().sadd(RedisConstant.SETMEAL_PIC_DB_RESOURCES, pic);
+    }
+

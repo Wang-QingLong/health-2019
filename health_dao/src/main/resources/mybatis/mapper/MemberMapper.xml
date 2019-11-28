@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置接口dao的全限定类名-->
+<mapper namespace="com.itcast.mapper.MemberMapper">
+    <!--提交数据到t_member-->
+    <insert id="add">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        insert into
+        t_member
+        (fileNumber,name,sex,idCard,phoneNumber,
+        regTime,password,email,birthday,remark)
+        values
+        (#{fileNumber},#{name},#{sex},#{idCard},#{phoneNumber},
+        #{regTime},#{password},#{email},#{birthday},#{remark})
+    </insert>
+
+
+    <!--根据Id更新就诊人-->
+    <update id="updateName">
+        update t_member set toname=#{name} where id=#{id}
+    </update>
+
+
+    <!--根据用户提供的手机号查询数据-->
+    <select id="findByTelephone" resultType="com.itcast.pojo.Member">
+   SELECT
+	*
+   FROM
+	t_member
+   WHERE
+	phoneNumber = #{telephone}
+    </select>
+
+</mapper>

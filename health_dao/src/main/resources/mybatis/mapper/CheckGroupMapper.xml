@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置接口dao的全限定类名-->
+<mapper namespace="com.itcast.mapper.CheckGroupMapper">
+
+    <!--新增检查组数据到t_checkgroup表当中-->
+    <insert id="add">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+
+        insert into t_checkgroup(code,name,sex,helpCode,remark,attention,gid)
+        values
+        (#{code},#{name},#{sex},#{helpCode},#{remark},#{attention},0)
+    </insert>
+
+    <!--关联检查组和检查项之间关系,添加到t_checkgroup_checkitem表当中-->
+    <!--    <insert id="setCheckGroupAndCheckItem">-->
+    <!--        insert into t_checkgroup_checkitem(checkgroup_id,checkitem_id)-->
+    <!--      		values-->
+    <!--      	(#{checkgroup_id},#{checkitem_id})-->
+    <!--    </insert>-->
+
+    <!--优化关联检查组和检查项之间关系,添加到t_checkgroup_checkitem表当中-->
+    <insert id="setCheckGroupAndCheckItem">
+        insert into t_checkgroup_checkitem(checkgroup_id,checkitem_id) values
+
+        <foreach collection="maps" item="map" separator=",">
+            (#{map.checkgroup_id},#{map.checkitem_id})
+        </foreach>
+    </insert>
+
+    <!--更新检查组的数据-->
+    <update id="Update">
+        update t_checkgroup
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="sex != null">
+                sex = #{sex},
+            </if>
+            <if test="code != null">
+                code = #{code},
+            </if>
+            <if test="helpCode != null">
+                helpCode = #{helpCode},
+            </if>
+            <if test="attention != null">
+                attention = #{attention},
+            </if>
+            <if test="remark != null">
+                remark = #{remark},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--删除检查组与检查项之间关联-->
+    <delete id="deleteAssociation">
+  delete from t_checkgroup_checkitem where checkgroup_id = #{id}
+    </delete>
+    <!--逻辑删除-->
+    <update id="delete">
+        update t_checkgroup set gid =1 where  id=#{id}
+    </update>
+
+    <!--分页查询-->
+    <select id="findPage" resultType="com.itcast.pojo.CheckGroup">
+        select * from t_checkgroup where
+        <if test="queryString !=null and queryString.trim().length > 0">
+            code like '%' #{queryString} '%'
+            or name like '%' #{queryString} '%'
+            or helpCode like '%' #{queryString} '%'
+            and
+        </if>
+        gid=0
+    </select>
+
+    <!--Id查询-->
+    <select id="findById" resultType="com.itcast.pojo.CheckGroup">
+        select * from t_checkgroup where  id=#{id}  and gid=0
+    </select>
+    <!--通过检查组Id查询检查项数据-->
+    <select id="findCheckItemIdsByCheckGroupId" resultType="java.lang.Integer">
+        SELECT
+	 c.id
+  FROM
+	 t_checkitem c
+	 LEFT JOIN t_checkgroup_checkitem cc ON c.id = cc.checkitem_id
+	 LEFT JOIN t_checkgroup cg ON cc.checkgroup_id = cg.id
+ WHERE
+	 cg.id = #{id} and c.uid=0;
+    </select>
+    <!--查询中间表-->
+    <select id="findCountById" resultType="java.lang.Integer">
+        SELECT
+	 count( * )
+  FROM
+	 t_checkgroup_checkitem
+  WHERE
+	 checkgroup_id =#{id}
+    </select>
+    <!--查询所有的检查组-->
+    <select id="findAll" resultType="com.itcast.pojo.CheckGroup">
+        select * from  t_checkgroup where gid=0;
+    </select>
+</mapper>
