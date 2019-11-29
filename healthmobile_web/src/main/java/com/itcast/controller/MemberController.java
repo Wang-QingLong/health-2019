@@ -106,11 +106,24 @@ public class MemberController {
     /**
      * 发送验证码并且返回验证码
      *
-     * @param telephone
+     * @param
      * @return
      */
     @RequestMapping("sendOrder")
-    public Result sendOrder(String telephone) {
+    public Result sendOrder(@RequestBody Map map) {
+        //先检验图片验证码是否正确
+        //获取页面输入的图片验证码
+        String code = (String) map.get("imgCode");
+        //获取redis内的图片文字验证码
+          //获取key
+        String o = (String) map.get("deviceId");
+            //获取redis内的value
+        String validateCode = jedisUtil.get(o);
+        if (!code.equals(validateCode)) {
+           return  Result.error("请输入正确的图片验证码");
+        }
+
+        String telephone = (String) map.get("telephone");
         //随机获取验证码
         String param = ValidateCodeUtils.generateValidateCode4String(4);
         try {

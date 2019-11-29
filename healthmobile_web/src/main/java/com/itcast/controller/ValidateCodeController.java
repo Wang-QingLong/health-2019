@@ -27,6 +27,11 @@ public class ValidateCodeController {
     @Autowired
     private JedisPool jedisPool;
 
+    /**获取图片验证码
+     * @param deviceId
+     * @param response
+     * @throws Exception
+     */
     @RequestMapping("/code/{deviceId}")
     public void createCode(@PathVariable String deviceId, HttpServletResponse response) throws Exception {
         Assert.notNull(deviceId, "机器码不能为空");

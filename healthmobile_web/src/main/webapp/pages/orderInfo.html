@@ -88,7 +88,6 @@
 
                 <!--图片验证码-->
                 <div class="input-row"> 
-                    <label>图片验证码</label>
                     <input v-model="imgCode" type="text" class="input-clear" placeholder="请输入图形验证码">  
                     <img :src="imgCodeUrl" @click="getImgCode()">
                 </div>
@@ -143,12 +142,20 @@
                     this.$message.error('请输入正确的手机号');
                     return false;
                 }
-                validateCodeButton = $("#validateCodeButton")[0];
-                clock = window.setInterval(doLoop, 1000); //一秒执行一次
-                axios.post("/order/sendOrder.do?telephone=" + telephone).then((response) => {
+
+                let params = {
+                    telephone: this.orderInfo.telephone,
+                    imgCode: this.imgCode,
+                    deviceId: this.deviceId
+                };
+                axios.post("/order/sendOrder.do",params).then((response) => {
 
                     if (response.data.flag) {
                         //验证码发送成功
+                        //开始计时
+                        validateCodeButton = $("#validateCodeButton")[0];
+                        clock = window.setInterval(doLoop, 1000); //一秒执行一次
+
                         this.$message({
                             message: response.data.message,
                             type: 'success'
