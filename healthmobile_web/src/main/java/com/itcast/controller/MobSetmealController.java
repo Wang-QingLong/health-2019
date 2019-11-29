@@ -36,7 +36,7 @@ public class MobSetmealController {
     public Result getToken(){
     String token = UUID.randomUUID().toString();
 
-    jedisUtil.setex("token",60*60,token);
+    jedisUtil.setex("token",60*60*60*60,token);
 
     return Result.success("",token);
 }

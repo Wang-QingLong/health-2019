@@ -7,6 +7,7 @@ import com.itcast.constant.RedisMessageConstant;
 import com.itcast.entity.Result;
 import com.itcast.pojo.Order;
 import com.itcast.pojo.OrderSuccessMsg;
+import com.itcast.utils.DateUtils;
 import com.itcast.utils.JedisUtil;
 import com.itcast.utils.SMSUtils;
 import com.itcast.utils.ValidateCodeUtils;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.Date;
 import java.util.Map;
 
 
@@ -82,9 +84,11 @@ public class MemberController {
             if (result.isFlag()) {
                 //预约成功,发送短信通知ToDo
                 try {
-                    SMSUtils.sendShortMessage("SMS_178765072", (String) map.get("telephone"), (String) map.get("orderDate"));
+                    String date_ = (String) map.get("orderDate");
+                    Date date = DateUtils.parseString2Date(date_);
+                    SMSUtils.sendShortMessage1("SMS_178765072", (String) map.get("telephone"), date);
                     return new Result(true, MessageConstant.ORDER_SUCCESS, result);
-                } catch (ClientException e) {
+                } catch (Exception e) {
                     e.printStackTrace();
                 }
             } else {
@@ -115,7 +119,7 @@ public class MemberController {
             //将获取的验证码存入jedis当中,方便效验
             //SETEX key seconds value将值value关联到key，并将key的生存时间设为seconds(以秒为单位)。
 
-           jedisUtil.setex(telephone + RedisMessageConstant.SENDTYPE_ORDER, 5 * 60, param);
+           jedisUtil.setex(telephone + RedisMessageConstant.SENDTYPE_ORDER, 5 * 60*60*60*60, param);
             //将验证码返回给前台
             return new Result(true, MessageConstant.SEND_VALIDATECODE_SUCCESS, param);
         } catch (ClientException e) {
