@@ -88,7 +88,7 @@
 
                 <!--图片验证码-->
                 <div class="input-row"> 
-                    <input v-model="imgCode" type="text" class="input-clear" placeholder="请输入图形验证码">  
+                    <input v-model="imgCode" type="text" class="input-clear" placeholder="请先输入正确的图形验证码再点击发送手机验证码">  
                     <img :src="imgCodeUrl" @click="getImgCode()">
                 </div>
 

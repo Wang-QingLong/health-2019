@@ -69,7 +69,7 @@ public class PayController {
                         ALIPAY_PUBLIC_KEY, "RSA2"); //获得初始化的AlipayClient
 
         AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://732xhs.natappfree.cc/pages/paySuccess.html");//支付成功之后跳转的地址(由于我们没有域名,我们使用natapp内网穿透工具)
+        alipayRequest.setReturnUrl("http://vm3eac.natappfree.cc/pages/paySuccess.html");//支付成功之后跳转的地址(由于我们没有域名,我们使用natapp内网穿透工具)
         alipayRequest.setNotifyUrl("http://732xhs.natappfree.cc/pay/alipayNotifyNotice.do");//支付成功通知地址
 
         Map orderInfo = memberService.findByOrderId(orderId);
@@ -77,7 +77,7 @@ public class PayController {
         JSONObject json = new JSONObject();
         json.put("out_trade_no",outTradeNo(orderId));//商户订单号，需要保证不重复(支付回调会带上这个参数，我们可以用来查询对应的订单修改状态)
         json.put("total_amount",0.01);//订单金额
-        json.put("subject",orderInfo.get("setmeal"));//订单标题
+        json.put("subject",orderInfo.get("name"));//订单标题
         alipayRequest.setBizContent(json.toJSONString());
 
         String form="";

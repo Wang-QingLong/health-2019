@@ -67,6 +67,13 @@
     </select>
     <!--根据Id查询信息-->
     <select id="findById" resultType="java.util.Map">
-        select * from t_order where id =#{orderId}
+    SELECT
+	*
+    FROM
+	t_order o
+	LEFT JOIN t_setmeal s ON o.setmeal_id = s.id
+    WHERE
+	o.id = #{orderId}
+	AND s.sid =0
     </select>
 </mapper>
