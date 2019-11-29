@@ -5,6 +5,7 @@ import com.itcast.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -49,5 +50,12 @@ public interface OrderMapper {
      * @return
      */
     String findNameById(@Param("id") Integer id);
+
+    /**根据Id查询信息
+     * @param orderId
+     * @return
+     */
+    Map findById(@Param("orderId") Integer orderId);
+
 }
 

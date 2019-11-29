@@ -55,7 +55,7 @@
     <select id="findOrderById" resultType="com.itcast.pojo.Order">
         select * from t_order where id=#{id}
     </select>
-<!--根据Id查询member表当中体检人name-->
+    <!--根据Id查询member表当中体检人name-->
     <select id="findNameById" resultType="java.lang.String">
         SELECT
 	m.toname
@@ -64,5 +64,9 @@
 	LEFT JOIN t_member m ON m.id = o.member_id
  WHERE
 	o.id = #{id};
+    </select>
+    <!--根据Id查询信息-->
+    <select id="findById" resultType="java.util.Map">
+        select * from t_order where id =#{orderId}
     </select>
 </mapper>

@@ -172,11 +172,11 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <!--支付宝支付-->
-<!--        <dependency>-->
-<!--            <groupId>com.alipay.sdk</groupId>-->
-<!--            <artifactId>alipay-sdk-java</artifactId>-->
-<!--        </dependency>-->
+<!--        支付宝支付-->
+        <dependency>
+            <groupId>com.alipay.sdk</groupId>
+            <artifactId>alipay-sdk-java</artifactId>
+        </dependency>
 
     </dependencies>
 

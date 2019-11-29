@@ -148,5 +148,11 @@ public class MemberServiceImpl implements MemberService {
         //返回数据
         return new OrderSuccessMsg(name, setmealId.getName(), orderDate, orderType);
     }
+
+    @Override
+    public Map findByOrderId(Integer orderId) {
+     return    orderMapper.findById(orderId);
+
+    }
 }
 

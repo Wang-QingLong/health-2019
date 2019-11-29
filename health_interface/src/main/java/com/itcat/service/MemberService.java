@@ -25,5 +25,11 @@ public interface MemberService {
      * @return
      */
     OrderSuccessMsg findById(Integer id);
+
+    /**根据订单Id获取信息
+     * @param orderId
+     * @return
+     */
+    Map findByOrderId(Integer orderId);
 }
 
