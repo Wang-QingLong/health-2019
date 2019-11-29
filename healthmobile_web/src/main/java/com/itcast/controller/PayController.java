@@ -44,11 +44,11 @@ public class PayController {
     //商户appid
     String APP_ID = "2016101600698540";
     //商户私钥
-    String APP_PRIVATE_KEY = "MIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCcgWn1/l0gpxNvmWoAfRJGlFmvjBa6o7r1M9kckzyfiE+CKkRKmHGo6RBBslMJnmpMMuaBfc0aHCZfsJxEEENyOJCgTlRTTpztG/dM8t1PJZqXG/oosCIhSj+Sk/zL7QL7a6Lsb3RcFk4Pp76f9Gn5y8NcROTtxvoUmEiEy7TQtd8khbxP9jN3YQhHoWGshFRTdsuSMgx2rdeG9KuotYKgnub8IlPRFvAK7nZ2NsnT/D270QWR+S07Lr4ewFWRzJOnAIEJMW8meTmXbfR7lUbjepXSNP5PLXxl8xWdOZAcNbrqP0gW+ZnYTq+x6iehlvs18tZTaCONHZ9O+P3pTaYpAgMBAAECggEAB2fEOMSRaYMeU1CCCIXigH5yg/Dv/mLS7NlIM6bv3miXwoP3eUQfVKu6fjFO5oydYP+jkor+Unb0heCYdEwEtPniNgOez9ZPbJS/Ld/sAtu3peDIBHbZFpQpz+i6tHeBhZ4BNojLi7Pue6UnSvBIt24hz1LfNjUNDj5qaAYvhxSQq4+HQDz78Te52Dg+Q0iGEaSBAEJzbAfx2KAiRBRx3JZwvHv5Q9tLspBVBupd8CE2fOC6/QmYoCclvtqksGsqjBaPek73N2GBmwp18fz2qY5QrXdzWUFhX0RlPBkQhjAUr0cuDHSOKNZ8zRJiIeK/W99yqTKjNUqNVXj1VHaKBQKBgQDzy7V+xGrkWxEOaDqov/bNOPc5uJeX+RsnFmsYSujh4061GjFm/CoNgdWGoqTV9jDLWzAIishi40NUUDXchFO0UtIk8p2zm2wVvozwQ6ntEXe3bcdJKPu0XM2EhGOas0JZ5yl3Ok2zYiUWcBOw+RU2fDZDOjhqZkIFqnWOoeGOZwKBgQCkVxA8PlY2PsPLURIlr8+KuN9HfQXiVINtRq8ljUqxVIb75gKcxLLNvlehDKo8Tsx4EPI7imc4qAQF1XF/KBEFsgk/Cj1rmi5+Mtt8i43YlJfG4eZqtbIZ4DgZmcKsFMc5G9zTncxLD/1hKCXyOCkq9XBqbbJ0jicV4mehWsAs7wKBgFXrkD5qCOYL9jnmn+3DIb73+aFdHggQYfJnozy/gc3CZ4XKAmkyK7vw6wj1HzTM/CtfKtGH39GCGMOJNUJPXJSrr6YX315iQzhynIc8wZFsW43I4bg1+md5YXD3m4b08EhxAJslcCbtSvbabwYq8r/uDM2qoiFVgqUuixnGkZC3AoGBAKJGvmdefq7t51S65xqDsoKe7wuebtMA9Q5Qv95q2JimiOvwQiAfMxhqngkPgoIupUTiJu+YSTju35oLHBmdrMFc/jhbmi7IfqRq/8TJ4PU+NWlT47z3UbivaXYOGObnVZoU40erB/IPBfqMNHwr7KrY1Xqie5cQT5QSjpYMELvNAoGBANZHfKNOzxTGGM7gOAS6HauuVUjM09sYbA2n6m07nK6SlydTA50nbptn9MpL8ddvMQiSGvivnBzE417PGPimINA+kjZ8NKVvQwKa4vUEPFTLaANWVtiDmHsPVJmO4YrBfEHwGjfmBJJ67NUr3GjiQ+ArYrIfhQ0+aaWQ//k1LER7";
+    String APP_PRIVATE_KEY = "MIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQCJLdoWxhAZ5zXkp6lPMcZB6SnRP9T/1eIBfGYO8KkTIwnbTq07tkpGPSOVcRVlH6m9D+pQvcLMJbI6OO82VaRkL+0dT+gwOkHKFTfY4LPswF5JKzAwkTZK+kN1tBYsPxmK9ICjwTEyKZ2284seM9EY3MqrxUt8vJvFyM1DNwZ/HHSo7GRMmCl0eznlds0QdkDyOnVpBayCXwP+49VdCUZtHGusERMFFuD+Sx3/xhb0syef3MX+q3lEB1x0XE0nh754doOiun40yRY6tBs361dyqf04aLwi7KTLcyoqJJEjbYHwdTAmhOOz2/pz2kHmGVobiCr+lMZkVXPCTfPGl6VlAgMBAAECggEAEaMNiSQJ6eqqKS3NPNtfbBX4RGj6j7IGDr7ZuE4EzusQV1v0NdsoDYPK0WnqoEfD4QTs0Vi0dN7b3VR4nPnB2we2arBdX+X9k2fK+F1bhLLu7GVbGsNwwY8PoVB4EVRDinQJHgS2uIZVOrJxTn7HAXVRsWf6Xp05QeKhUWT/ttPXaVhLW6o4iWy8Km6IqifgOkgt+rIyBtwkp5avzohV5PwdlZfyyOYzgEkVCjirXxlYhqPkRGxvSM1+kNmhJa4ENBKwo35uhKs8vYA8t3mqP9YZ3W7/N4Vkkl6FK8T0Zje9w40+I+U9ZYD1C4DMU+ROHhWKHopb3FNh/9Hzh7GRQQKBgQDLnlsKiWsUMLKq6LUExeI7kSzAyj6e7fWtKrBfPiIiSk9amjXVGgs6UN/BS3/LS9t+9yok2NVhOMuag+MHR8/ur0Wa/5LXL9nb+ynAiHqe16aTYUex+p+VvwOgZE41poNmNwrc4YVhnJvM65C02f7gLrGRJHMZNYeyJQGETJCfrQKBgQCseANiRUkHTLznfEescLjFkmG8EVAdh1eMy7bKm1gHO5eyxbuiCC6zLhm3JIPctgGoibH+iG94zcbtUIlBCKNG4ZdV8lvoyyeyDY//q0v3ko5zhBlNh4AJhriXQPEmOQlXeiENic1WnytwyNLiKDfTPKHZ9LtWVHCYQhfFxdPzmQKBgQC+VVdK4Str4x2QLxjOzl7sSYco66RfkZZd+ZKGZSEpJodI7O+3NLIcH+8Y04cwtMcHxujpKptDVwDTfcchThprRgFtostTRRKD1CKyK6Fbi7/U8lE/aEP2iWhNbJXDBtS7HmaUFGdG2Eq24dgRhdj/HAa14vmILgabGoZxcdSavQKBgBAO5JHDzbbmSDhtc+b0X9/Vb1ApdIIrVdWAKjbXG+0geVFl48CEboS0aCSLO9PTBniAyZffcDGZR0pVU1JA0aMJ4iNYe4JDWCDV7nBprJsShDzxMcHsOdmpN4qtu0ZJzTrd3jH6gKnuDAdmS2xPPlNms9MtXDv/hLRIgxog/0kRAoGAd/w1IQj1tVCF3ZUaCo6Cj2vlz4x2W3zJXnzKlkbihC56BxH/JIh3Ld8VbNmCfAWs65aO3SLZwZzyd/xUgVO1GR44RZpYv6xXdWVBjhEv6D1Y+KJY84l9j+4LJCbjOu26OsKjAcxJAihUth+op4CJYkKj6g6oxB54hoI3E2a/dKE=";
 
     String CHARSET = "UTF-8";
     //支付宝公钥
-    String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAyCJ6Af6PEb+PXgc4qhxEs5We6YWCyO+9T84Ib+WtwfpPkBsHOeVaAvL2Nz6xpNfMwTm+PC/+NXZJbHK90BsDBGW/QPENI/2qw4oWdHIJBBbBmO9cGKrSUpfid0GWT24oTCvy8Tgiq5Vf3p+xWHaujBJCJqAJduvOPPEb7OVP5uyx0In57q7pbMYU6NUMIZCvrzaBcBLPjjav41Q8CDkeDACZhjER7Cw/M+Blkk9dfrwBLoilIhoIaqXs+KjHnqP47wrxoFPRXOhONVvFFnrMME7i0MM6X22rI1a1uhvcieGPDwFS/pvuRAM6na0uJ4T0uvmSeumSANRW51AWk0QipQIDAQAB";
+    String ALIPAY_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAiS3aFsYQGec15KepTzHGQekp0T/U/9XiAXxmDvCpEyMJ206tO7ZKRj0jlXEVZR+pvQ/qUL3CzCWyOjjvNlWkZC/tHU/oMDpByhU32OCz7MBeSSswMJE2SvpDdbQWLD8ZivSAo8ExMimdtvOLHjPRGNzKq8VLfLybxcjNQzcGfxx0qOxkTJgpdHs55XbNEHZA8jp1aQWsgl8D/uPVXQlGbRxrrBETBRbg/ksd/8YW9LMnn9zF/qt5RAdcdFxNJ4e+eHaDorp+NMkWOrQbN+tXcqn9OGi8Iuyky3MqKiSRI22B8HUwJoTjs9v6c9pB5hlaG4gq/pTGZFVzwk3zxpelZQIDAQAB";
 
     /**
      * 构造支付请求
@@ -69,14 +69,14 @@ public class PayController {
                         ALIPAY_PUBLIC_KEY, "RSA2"); //获得初始化的AlipayClient
 
         AlipayTradeWapPayRequest alipayRequest = new AlipayTradeWapPayRequest();//创建API对应的request
-        alipayRequest.setReturnUrl("http://5muhnf.natappfree.cc/pages/paySuccess.html");//支付成功之后跳转的地址(由于我们没有域名,我们使用natapp内网穿透工具)
-        alipayRequest.setNotifyUrl("http://5muhnf.natappfree.cc/pay/alipayNotifyNotice.do");//支付成功通知地址
+        alipayRequest.setReturnUrl("http://732xhs.natappfree.cc/pages/paySuccess.html");//支付成功之后跳转的地址(由于我们没有域名,我们使用natapp内网穿透工具)
+        alipayRequest.setNotifyUrl("http://732xhs.natappfree.cc/pay/alipayNotifyNotice.do");//支付成功通知地址
 
         Map orderInfo = memberService.findByOrderId(orderId);
 
         JSONObject json = new JSONObject();
         json.put("out_trade_no",outTradeNo(orderId));//商户订单号，需要保证不重复(支付回调会带上这个参数，我们可以用来查询对应的订单修改状态)
-        json.put("total_amount",1000);//订单金额
+        json.put("total_amount",0.01);//订单金额
         json.put("subject",orderInfo.get("setmeal"));//订单标题
         alipayRequest.setBizContent(json.toJSONString());
 

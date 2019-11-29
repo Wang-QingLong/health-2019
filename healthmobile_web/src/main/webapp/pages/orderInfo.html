@@ -117,10 +117,7 @@
             setmeal: {},//套餐信息
             orderInfo: {
                 setmealId: id,
-                sex: '1',
-                telephone: '15727538286',
-                validateCode: 'a3dd',
-                idCard: '362228199705011893'
+                sex: '1'
             },//预约信息
             imgCodeUrl: '',
             deviceId: '',
@@ -182,7 +179,7 @@
                 axios.post("/order/submit.do", this.orderInfo).then((response) => {
 
                     if (response.data.flag) {
-                        //预约成功，跳转到预约成功页面
+                        // 预约成功，跳转到预约成功页面
                         window.location.href = "orderSuccess.html?orderId=" + response.data.data.data.id;
                     } else {
                         //预约失败，提示预约失败信息
