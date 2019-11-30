@@ -1,6 +1,7 @@
 package com.itcat.service;
 
 import com.itcast.entity.Result;
+import com.itcast.pojo.Member;
 import com.itcast.pojo.OrderSuccessMsg;
 
 import java.util.Map;
@@ -31,5 +32,16 @@ public interface MemberService {
      * @return
      */
     Map findByOrderId(Integer orderId);
+
+    /**根据电话号码查找
+     * @param telephone
+     * @return
+     */
+    Member findByTelephone(String telephone);
+
+    /**添加会员数据
+     * @param member
+     */
+    void add(Member member);
 }
 

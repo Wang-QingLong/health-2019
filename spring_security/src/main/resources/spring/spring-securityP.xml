@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://code.alibabatech.com/schema/dubbo
+						http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+                          http://www.springframework.org/schema/security
+                          http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--为了简洁，之前配的注解看spring-security.xml-->
+    <!--在spring-security.xml中主要配置Spring Security的拦截规则和认证管理器。-->
+
+
+    <!--1.1配置通配符，意思就是有一些页面资源和登陆页面不希望被拦截-->
+    <security:http security="none" pattern="/js/**"/>
+    <security:http security="none" pattern="/css/**"/>
+    <security:http security="none" pattern="/login.html"/>
+
+
+    <!--1,配置http拦截规则  use-expressions="true"可以省略不写，因为默认就是true-->
+
+    <!--auto-config='true'就是自动配置一个默认的登陆页面，退出操作，一些过滤器
+     如果觉得框架自己配的太丑，自己定义自己需要的设置，但是必须写在http当中,
+      而且下面必须配置csrf 是否禁用那里改成true-->
+    <security:http auto-config="true">
+
+        <!--拥有add权限就可以访问add.html页面-->
+        <security:intercept-url pattern="/add.html"  access="hasAuthority('add')" />
+        <!--拥有ROLE_ADMIN角色就可以访问del.html页面-->
+        <security:intercept-url pattern="/del.html"  access="hasRole('ROLE_ADMIN')" />
+        <!--拥有ROLE_ADMIN角色就可以访问d.html页面，
+         注意：此处虽然写的是ADMIN角色，框架会自动加上前缀ROLE_-->
+<!--        <security:intercept-url pattern="/d.html"  access="hasRole('ADMIN')" />-->
+
+
+        <!-- 因为系统给的页面比较丑，所以我们自己定义:选择form-login,因为都是根据表单提交来登录
+       登录页面：                 login-page="/login.html"
+       登陆成功跳转到哪：          default-target-url="/index.html"
+       登录失败跳转到哪：         authentication-failure-url="/login.html"
+        -->
+        <security:form-login
+                login-page="/login.html"
+                default-target-url="/index.html"
+                authentication-failure-url="/login.html"/>
+
+
+        <!--  csrf：对应CsrfFilter过滤器
+       disabled：是否启用CsrfFilter过滤器，
+       如果使用自定义登录页面需要关闭此项，否则登录操作会被禁用（403）-->
+
+        <security:csrf disabled="true"/>
+
+        <!--配置退出-->
+        <security:logout logout-url="/logout" logout-success-url="/login.html"/>
+        <!--没有权限访问的提示页面-->
+        <security:access-denied-handler error-page="/error.html"/>
+
+    </security:http>
+
+
+    <!--2,配置Spring_Security认证管理器-->
+    <security:authentication-manager>
+        <!--
+            authentication-provider：认证提供者，执行具体的认证逻辑
+        -->
+        <security:authentication-provider>
+            <!--
+                user-service：用于获取用户信息，提供给authentication-provider进行认证
+            -->
+            <security:user-service>
+                <!--
+                  user：定义用户信息，可以指定用户名、密码、角色，后期可以改为从数据库查询用户信息
+				  {noop}：表示当前使用的密码为明文，后面会改用密文
+                -->
+                <!-- <security:user name="admin" authorities="aaa" password="{noop}admin"/>-->
+                <security:user name="xiaoming" authorities="add" password="{noop}xiaoming"/>
+                <security:user name="admin" authorities="ROLE_ADMIN" password="{noop}admin"/>
+            </security:user-service>
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+
+</beans>

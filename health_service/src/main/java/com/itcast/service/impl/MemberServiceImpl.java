@@ -149,10 +149,29 @@ public class MemberServiceImpl implements MemberService {
         return new OrderSuccessMsg(name, setmealId.getName(), orderDate, orderType);
     }
 
+    /**根据订单Id查找
+     * @param orderId
+     * @return
+     */
     @Override
     public Map findByOrderId(Integer orderId) {
      return    orderMapper.findById(orderId);
 
+    }
+
+    /**根据电话号码查找
+     * @param telephone
+     * @return
+     */
+    @Override
+    public Member findByTelephone(String telephone) {
+
+     return  memberMapper.findByTelephone(telephone);
+    }
+
+    @Override
+    public void add(Member member) {
+        memberMapper.add(member);
     }
 }
 

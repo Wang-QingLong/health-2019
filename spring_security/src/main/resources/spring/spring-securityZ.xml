@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://code.alibabatech.com/schema/dubbo
+						http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+                          http://www.springframework.org/schema/security
+                          http://www.springframework.org/schema/security/spring-security.xsd">
+
+    <!--为了简洁，之前配的注解看spring-securityPPP.xml-->
+    <!--在spring-security.xml中主要配置Spring Security的拦截规则和认证管理器。-->
+
+    <!--使用密文加密-->
+
+
+    <!--1.1配置通配符，意思就是有一些页面资源和登陆页面不希望被拦截-->
+    <security:http security="none" pattern="/js/**"/>
+    <security:http security="none" pattern="/css/**"/>
+    <security:http security="none" pattern="/login.html"/>
+
+    <security:http auto-config="true">
+        <!--拥有add权限的只能访问add页面-->
+        <security:intercept-url pattern="/add.html" access="hasAuthority('add')"/>
+        <!--拥有admin角色的可以访问del页面-->
+        <security:intercept-url pattern="/del.html" access="hasAuthority('del')"/>
+        <!--只要登录就可以访问所以资源 :后面注解需要用到这里要不要无所谓-->
+        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <security:form-login
+                login-page="/login.html"
+                default-target-url="/index.html"
+                authentication-failure-url="/login.html"/>
+
+
+        <!--  csrf：对应CsrfFilter过滤器
+       disabled：是否启用CsrfFilter过滤器，
+       如果使用自定义登录页面需要关闭此项，否则登录操作会被禁用（403）-->
+
+        <security:csrf disabled="true"/>
+
+        <!--配置退出-->
+        <security:logout logout-url="/logout" logout-success-url="/login.html"/>
+        <!--没有权限访问的提示页面-->
+        <security:access-denied-handler error-page="/error.html"/>
+
+    </security:http>
+
+
+    <!--2,配置Spring_Security认证管理器-->
+    <security:authentication-manager>
+        <!--
+            authentication-provider：认证提供者，执行具体的认证逻辑
+        -->
+        <security:authentication-provider user-service-ref="MyUserService">
+
+            <!--指定密码加密策略-->
+            <security:password-encoder ref="passwordEncoder"/>
+
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!--自定义提供认证权限的实体类-->
+    <bean id="MyUserService" class="com.itcast.security.MyUserServiceZ">
+        <!--配置密文加密-->
+        <property name="passwordEncoder" ref="passwordEncoder"/>
+    </bean>
+    <!---->
+    <!--配置密码加密对象-->
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+</beans>

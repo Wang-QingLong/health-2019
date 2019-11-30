@@ -15,6 +15,7 @@
         <script src="../plugins/healthmobile.js"></script>
         <script src="../plugins/vue/vue.js"></script>
         <script src="../plugins/vue/axios-0.18.0.js"></script>
+        <script src="../js/loginToken.jsp"/>
         <script src="../plugins/elementui/index.js"></script>
     </head>
     <body data-spy="scroll" data-target="#myNavbar" data-offset="150">
@@ -85,6 +86,10 @@
                     }
                     axios.post("/login/check.do",this.loginInfo).then((response) => {
                         if(response.data.flag){
+
+                            //将服务端返回token保存在浏览器
+                            localStorage.setItem("token",response.data.data);
+
                             //登录成功,跳转到index.html
                             window.location.href="index.html";
                         }else{

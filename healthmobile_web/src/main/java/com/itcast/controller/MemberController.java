@@ -132,7 +132,7 @@ public class MemberController {
             //将获取的验证码存入jedis当中,方便效验
             //SETEX key seconds value将值value关联到key，并将key的生存时间设为seconds(以秒为单位)。
 
-           jedisUtil.setex(telephone + RedisMessageConstant.SENDTYPE_ORDER, 5 * 60*60*60*60, param);
+           jedisUtil.setex(telephone + RedisMessageConstant.SENDTYPE_ORDER, 5 * 60, param);
             //将验证码返回给前台
             return new Result(true, MessageConstant.SEND_VALIDATECODE_SUCCESS, param);
         } catch (ClientException e) {
