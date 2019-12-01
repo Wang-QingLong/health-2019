@@ -10,8 +10,9 @@ import com.itcast.entity.QueryPageBean;
 import com.itcast.entity.Result;
 import com.itcast.pojo.Setmeal;
 import com.itcast.utils.QiniuUtil;
-import com.itcat.service.SetmealService;
+import com.itcast.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import redis.clients.jedis.JedisPool;
 
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -132,6 +132,7 @@ return new Result(false,MessageConstant.QUERY_SETMEAL_FAIL);
 
 
     @RequestMapping("delete")
+    @PreAuthorize("hasAuthority('SETMEAL_DELETE')")  //权限校验
     public Result delete(Integer id){
 
         //根据id查询是否存在引用关系

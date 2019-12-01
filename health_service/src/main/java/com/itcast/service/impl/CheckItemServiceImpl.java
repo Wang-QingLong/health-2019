@@ -4,10 +4,9 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.itcast.entity.PageResult;
-import com.itcast.entity.Result;
 import com.itcast.mapper.CheckItemMapper;
 import com.itcast.pojo.CheckItem;
-import com.itcat.service.CheckItemService;
+import com.itcast.service.CheckItemService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

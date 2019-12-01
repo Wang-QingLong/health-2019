@@ -17,6 +17,7 @@
         <module>health_quartz</module>
         <module>healthmobile_web</module>
         <module>spring_security</module>
+        <module>mybatis_generator_lombok</module>
     </modules>
     <packaging>pom</packaging>
 

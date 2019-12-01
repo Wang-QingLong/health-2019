@@ -5,7 +5,7 @@ import com.alibaba.dubbo.config.annotation.Service;
 import com.google.common.collect.Lists;
 import com.itcast.mapper.OrderSettingMapper;
 import com.itcast.pojo.OrderSetting;
-import com.itcat.service.OrderSettingService;
+import com.itcast.service.OrderSettingService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

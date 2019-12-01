@@ -1,4 +1,4 @@
-package com.itcat.service;
+package com.itcast.service;
 
 import com.alibaba.dubbo.config.annotation.Service;
 import com.itcast.pojo.OrderSetting;

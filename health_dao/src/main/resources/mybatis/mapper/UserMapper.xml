@@ -1,0 +1,98 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置接口dao的全限定类名-->
+<mapper namespace="com.itcast.mapper.UserMapper">
+
+    <!--根据用户名查询用户信息-->
+    <select id="findByUserName" resultType="com.itcast.pojo.User">
+        select * from t_user where username=#{username}
+    </select>
+    <!--根据用户名查询角色信息集合-->
+    <select id="findRolesByUserName" resultType="com.itcast.pojo.Role">
+       SELECT
+	r.*
+  FROM
+	 t_user u
+	 LEFT JOIN t_user_role ur ON u.id = ur.user_id
+	 LEFT JOIN t_role r ON r.id = ur.role_id
+  WHERE
+	username = #{username}
+    </select>
+    <!--根据用户Ids查询权限集合-->
+    <select id="findPermissionByRoles" resultType="com.itcast.pojo.Permission">
+
+        SELECT
+        p.* ,rp.role_id roleId
+        FROM
+        t_role r
+        LEFT JOIN t_role_permission rp ON r.id = rp.role_id
+        LEFT JOIN t_permission p ON p.id = rp.permission_id
+        WHERE
+        r.id IN
+        <foreach collection="roleIds" item="id" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+    <!--使用Mybatis新特性一套查询-->
+    <resultMap id="UserMap" type="com.itcast.pojo.User" autoMapping="true">
+        <!--开启自动映射之后相同的就不需要再重新写-->
+        <!--主键字段Id-->
+                <id property="id" column="uid"/>
+<!--        非主键字段-->
+                <result property="birthday" column="birthday"/>
+                <result property="gender" column="gender"/>
+                <result property="username" column="username"/>
+                <result property="password" column="password"/>
+                <result property="remark" column="remark"/>
+                <result property="station" column="station"/>
+                <result property="telephone" column="telephone"/>
+        <!-- Role表-->
+        <collection property="roles" ofType="com.itcast.pojo.Role"   javaType="java.util.Set" autoMapping="true">
+            <!--主键-->
+            <id property="id" column="rid"/>
+            <!--非主键-->
+            <result property="name" column="rname"/>
+            <result property="keyword" column="rkeyword"/>
+            <result property="description" column="rdescription"/>
+            <!--permission表-->
+            <collection property="permissions" ofType="com.itcast.pojo.Permission" autoMapping="true" javaType="java.util.Set">
+                <!--主键Id-->
+                <id property="id" column="pid"/>
+                <!--非主键-->
+                <result property="name" column="pname"/>
+                <result property="keyword" column="pkeyword"/>
+                <result property="description" column="pdescription"/>
+            </collection>
+        </collection>
+    </resultMap>
+
+    <!--使用Mybatis新特性一套查询-->
+    <select id="findByUserNameByMyBatis" resultMap="UserMap">
+   SELECT
+	u.id uid,
+	u.birthday,
+	u.gender,
+	u.username,
+	u.password,
+	u.remark,
+	u.station,
+	u.telephone,
+	r.id rid,
+	r.NAME rname,
+	r.keyword rkeyword,
+	r.description rdescription,
+	p.id pid,
+	p.NAME pname,
+	p.keyword pkeyword,
+	p.description pdescription
+  FROM
+	t_user u
+	LEFT JOIN t_user_role ur ON ur.user_id = u.id
+	LEFT JOIN t_role r ON r.id = ur.role_id
+	LEFT JOIN t_role_permission rp ON rp.role_id = r.id
+	LEFT JOIN t_permission p ON p.id = rp.permission_id
+	 where u.username=#{username}
+    </select>
+</mapper>

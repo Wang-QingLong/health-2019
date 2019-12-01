@@ -6,7 +6,7 @@ import com.itcast.constant.MessageConstant;
 import com.itcast.entity.Result;
 import com.itcast.pojo.Setmeal;
 import com.itcast.utils.JedisUtil;
-import com.itcat.service.SetmealService;
+import com.itcast.service.SetmealService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

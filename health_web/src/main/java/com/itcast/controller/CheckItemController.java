@@ -6,9 +6,8 @@ import com.itcast.entity.PageResult;
 import com.itcast.entity.QueryPageBean;
 import com.itcast.entity.Result;
 import com.itcast.pojo.CheckItem;
-import com.itcat.service.CheckItemService;
-import com.sun.org.apache.regexp.internal.RE;
-import org.springframework.web.bind.annotation.PathVariable;
+import com.itcast.service.CheckItemService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -99,6 +98,7 @@ public class CheckItemController {
      * @return
      */
     @RequestMapping(value = "delete")
+    @PreAuthorize("hasAuthority('CHECKITEM_DELETE')")  //权限校验
     public Result delete(Integer id) {
         try {
             checkItemService.delete(id);

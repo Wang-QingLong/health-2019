@@ -8,8 +8,8 @@ import com.itcast.entity.PageResult;
 import com.itcast.entity.QueryPageBean;
 import com.itcast.entity.Result;
 import com.itcast.pojo.CheckGroup;
-import com.itcast.pojo.CheckItem;
-import com.itcat.service.CheckGroupService;
+import com.itcast.service.CheckGroupService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -157,6 +157,7 @@ public class CheckGroupController {
      * @return
      */
     @RequestMapping("delete")
+    @PreAuthorize("hasAuthority('CHECKGROUP_DELETE')")  //权限校验
     public Result delete(Integer id) {
         //根据id查询是否存在引用关系
         Integer count = checkGroupService.findCountById(id);

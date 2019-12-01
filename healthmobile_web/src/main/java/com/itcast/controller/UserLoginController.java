@@ -6,8 +6,7 @@ import com.itcast.constant.RedisMessageConstant;
 import com.itcast.entity.Result;
 import com.itcast.pojo.Member;
 import com.itcast.utils.JedisUtil;
-import com.itcat.service.MemberService;
-import com.itcat.service.UserLoginService;
+import com.itcast.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -28,8 +27,7 @@ import java.util.UUID;
 @RestController
 @RequestMapping("login")
 public class UserLoginController {
-    @Reference
-    private UserLoginService userLoginService;
+
 
     @Autowired
     private JedisUtil jedisUtil;

@@ -12,4 +12,11 @@ bcrypt：将salt随机并混入最终加密后的密码，验证时也无需单�
 
 加密后字符串的长度为固定的60位。其中：$是分割符，无意义；2a是bcrypt加密版本号；10是cost的值；而后的前22位是salt值；再然后的字符串就是密码的密文了。
 
+可以使用下面的测试自己输入的字符串长什么样子
+
+public static void main(String[] args) {
+        BCryptPasswordEncoder b = new BCryptPasswordEncoder();
+        System.out.println(b.encode("juan"));
+    }
+
 

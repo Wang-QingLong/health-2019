@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置接口dao的全限定类名-->
+<mapper namespace="com.itcast.mapper.ReportMapper">
+
+    <!--根据日期查询数量-->
+    <select id="findMemberCountByMonths" resultType="java.lang.Integer">
+
+        <!--使用转义符号-->
+        <![CDATA[
+
+        SELECT
+        count( * )
+        FROM
+        t_member
+        WHERE
+           regTime <= #{month}
+
+   ]]>
+
+
+    </select>
+</mapper>

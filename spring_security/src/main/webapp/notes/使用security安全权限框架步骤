@@ -1,0 +1,233 @@
+如何使用spring-seurity安全框架？
+！！！！！！！！！第一步：导入需要的依赖，配置文件
+
+
+
+ <!-- Spring Security是 Spring提供的安全认证服务的安全框架 -->
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-web</artifactId>
+                <version>5.0.5.RELEASE</version>
+            </dependency>
+            <dependency>
+                <groupId>org.springframework.security</groupId>
+                <artifactId>spring-security-config</artifactId>
+                <version>5.0.5.RELEASE</version>
+            </dependency>
+
+
+
+在web.xml当中引入配置 ：上面这一块不要改，名字不能改，固定写法，下面需要引入相应的
+配置文件
+
+    <filter>
+        <!--
+          DelegatingFilterProxy用于整合第三方框架
+          整合Spring Security时过滤器的名称必须为springSecurityFilterChain，
+          否则会抛出NoSuchBeanDefinitionException异常
+        -->
+        <filter-name>springSecurityFilterChain</filter-name>
+        <filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>springSecurityFilterChain</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
+    -------------------------------------------
+    <!--配置springmvc前端控制器-->
+    <servlet>
+        <servlet-name>springmvc</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 指定加载的配置文件 ，通过参数contextConfigLocation加载 -->
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:spring/spring-securityZ.xml</param-value>
+        </init-param>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springmvc</servlet-name>
+        <url-pattern>*.do</url-pattern>
+    </servlet-mapping>
+
+！！！！！！！第二步：导入配置文件
+
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:context="http://www.springframework.org/schema/context"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xmlns:mvc="http://www.springframework.org/schema/mvc"
+       xmlns:security="http://www.springframework.org/schema/security"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans
+						http://www.springframework.org/schema/beans/spring-beans.xsd
+						http://www.springframework.org/schema/mvc
+						http://www.springframework.org/schema/mvc/spring-mvc.xsd
+						http://code.alibabatech.com/schema/dubbo
+						http://code.alibabatech.com/schema/dubbo/dubbo.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context.xsd
+                          http://www.springframework.org/schema/security
+                          http://www.springframework.org/schema/security/spring-security.xsd">
+
+
+    <!--在spring-security.xml中主要配置Spring Security的拦截规则和认证管理器。-->
+
+    <!--1.1配置通配符，有一些页面资源和登陆页面不希望被拦截-->
+    <security:http security="none" pattern="/js/**"/>
+    <security:http security="none" pattern="/css/**"/>
+    <security:http security="none" pattern="/login.html"/>
+
+    <security:http auto-config="true">
+
+
+        <security:headers>
+            <!--            same origin (协议://域名:端口)-->
+            <security:frame-options policy="SAMEORIGIN"></security:frame-options>
+        </security:headers>
+
+        <!--只要登录就可以访问所以资源-->
+        <security:intercept-url pattern="/**" access="isAuthenticated()"/>
+        <!--自定义form-login表单登录信息
+        注意: 默认的登录用户名和密码是username和password ,如何自己定义了,那么需要用
+        将下面的修改后放到下面去,还有就是登录url默认是login,如果你页面写了login.do也需要修改
+                username-parameter="username"
+                password-parameter="password"
+                login-processing-url="/login.do"
+        -->
+        <security:form-login
+                login-page="/你的登录页面"
+                default-target-url="/登录成功之后跳转到哪里去"
+                authentication-failure-url="/你的登录页面"
+                always-use-default-target="true"
+        />
+        <!--  csrf：对应CsrfFilter过滤器
+       disabled：是否启用CsrfFilter过滤器，
+       如果使用自定义登录页面需要关闭此项，否则登录操作会被禁用（403）-->
+        <security:csrf disabled="true"/>
+
+        <!--配置退出-->
+        <security:logout logout-url="/logout" logout-success-url="/你的登录页面"/>
+        <!--没有权限访问的提示页面-->
+        <security:access-denied-handler error-page="/你自定义的没有权限访问的页面"/>
+
+    </security:http>
+
+
+    <!--2,配置Spring_Security认证管理器-->
+    <security:authentication-manager>
+        <!--
+            authentication-provider：认证提供者，执行具体的认证逻辑
+        -->
+        <security:authentication-provider user-service-ref="MyUserService">
+
+            <!--指定密码加密策略-->
+            <security:password-encoder ref="passwordEncoder"/>
+
+        </security:authentication-provider>
+    </security:authentication-manager>
+
+    <!--自定义提供认证权限的实体类-->
+    <bean id="MyUserService" class="自定义提供认证权限的实体类">
+        <!--配置密文加密-->
+        <property name="passwordEncoder" ref="passwordEncoder"/>
+    </bean>
+    <!---->
+    <!--配置密码加密对象-->
+    <bean id="passwordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"/>
+    <!--开启spring容器包扫描-->
+    <context:component-scan base-package="com.itcast.controller"/>
+    <!--开启sringmvc框架对注解的支持-->
+    <mvc:annotation-driven/>
+    <!--开启注解方式权限控制-->
+    <security:global-method-security pre-post-annotations="enabled"/>
+</beans>
+
+！！！！！！！第三步：
+配置权限框架对应的实体类，必须实现UserDetailsService这个接口，然后自动引入密文加密
+重写实现方法（只需要输入用户名，框架自动会匹配你输入的密码和用户名通过数据库，如果匹配不上就登录不成功），举列如下，需要从数据库中拿信息，获取的User对象是权限框架自带的实现类，
+返回的User会存入sercurity权限框架的上下文中，可以用来页面展示用户名，具体用法如下：
+
+----------用sercurity权限框架的上下文获取存入的User对象-----------------
+
+ //从springsecurity上下文获取用户名
+        User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+
+--------------------------
+package com.itcast.security;
+
+
+import com.alibaba.dubbo.config.annotation.Reference;
+import com.itcast.pojo.Permission;
+import com.itcast.pojo.Role;
+import com.itcast.pojo.User;
+import com.itcast.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
+
+/**
+ * @version V1.0
+ * @author: WangQingLong
+ * @date: 2019/11/30 19:06
+ * @description:
+ */
+@Component
+public class UserSecurity implements UserDetailsService {
+
+    //注意：此处要通过dubbo远程调用用户服务
+    @Reference
+    private UserService userService;
+
+    //密文加密
+    @Autowired
+    private BCryptPasswordEncoder passwordEncoder;
+
+
+    /**
+     * 根据用户名查询账户信息
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
+    @Override
+    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+
+//        User user = userService.findByUsername(username);
+        User user = userService.findByUserNameByMyBatis(username);
+        if (user == null) {
+            //用户名不存在
+            return null;
+        }
+
+        List<GrantedAuthority> list = new ArrayList<>();
+
+        Set<Role> roles = user.getRoles();
+        for (Role role : roles) {
+            Set<Permission> permissions = role.getPermissions();
+            for (Permission permission : permissions) {
+                //授权
+                list.add(new SimpleGrantedAuthority(permission.getKeyword()));
+            }
+        }
+
+
+        return new org.springframework.security.core.userdetails.User(username, user.getPassword(), list);
+    }
+}
+
+！！！！！！！！！！！！第四步：在你需要的controller里面的请求方法上加上，一般放在删除出上面，用于限制权限
+@PreAuthorize("hasAuthority('CHECKGROUP_DELETE')")  //权限校验

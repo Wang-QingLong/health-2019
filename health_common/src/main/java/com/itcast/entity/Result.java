@@ -28,6 +28,9 @@ public class Result implements Serializable {
     public static Result success(String s, String message) {
         return new Result(true, message, s);
     }
+    public static Result success(Object s, String message) {
+        return new Result(true, message, s);
+    }
 
     public static Result error( String message) {
         return new Result(false, message);

@@ -8,7 +8,7 @@ import com.itcast.mapper.CheckGroupMapper;
 import com.itcast.mapper.CheckItemMapper;
 import com.itcast.pojo.CheckGroup;
 import com.itcast.pojo.CheckItem;
-import com.itcat.service.CheckGroupService;
+import com.itcast.service.CheckGroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 

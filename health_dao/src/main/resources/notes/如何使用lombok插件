@@ -1,0 +1,17 @@
+ lombok：用于自动配置get set等，简化书写
+ 1,先下载插件lombok
+ 2,再导入依赖  一般放在pojo层
+
+ <!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+ <dependency>
+     <groupId>org.projectlombok</groupId>
+     <artifactId>lombok</artifactId>
+     <version>1.18.8</version>
+     <scope>provided</scope>
+ </dependency>
+
+ 3.在需要使用的实体类上面加注解
+ @Data   自动生成get set
+ @ToString
+ @AllArgsConstructor   满参
+ @NoArgsConstructor    无参

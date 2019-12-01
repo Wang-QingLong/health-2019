@@ -3,6 +3,7 @@ package com.itcast.pojo;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -18,6 +19,15 @@ public class User implements Serializable{
     private String station; // 状态
     private String telephone; // 联系电话
     private Set<Role> roles = new HashSet<Role>(0);//对应角色集合
+    private List<Role> roleslist;
+
+    public List<Role> getRoleslist() {
+        return roleslist;
+    }
+
+    public void setRoleslist(List<Role> roleslist) {
+        this.roleslist = roleslist;
+    }
 
     public Integer getId() {
         return id;

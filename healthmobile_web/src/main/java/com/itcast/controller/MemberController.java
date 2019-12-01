@@ -11,7 +11,7 @@ import com.itcast.utils.DateUtils;
 import com.itcast.utils.JedisUtil;
 import com.itcast.utils.SMSUtils;
 import com.itcast.utils.ValidateCodeUtils;
-import com.itcat.service.MemberService;
+import com.itcast.service.MemberService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;

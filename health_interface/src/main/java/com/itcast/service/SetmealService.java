@@ -1,4 +1,4 @@
-package com.itcat.service;
+package com.itcast.service;
 
 import com.itcast.entity.PageResult;
 import com.itcast.pojo.Setmeal;

@@ -3,6 +3,7 @@ package com.itcast.pojo;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,6 +17,15 @@ public class Role implements Serializable {
     private Set<User> users = new HashSet<User>(0);
     private Set<Permission> permissions = new HashSet<Permission>(0);
     private LinkedHashSet<Menu> menus = new LinkedHashSet<Menu>(0);
+    private List<Permission> permissionslist;
+
+    public List<Permission> getPermissionslist() {
+        return permissionslist;
+    }
+
+    public void setPermissionslist(List<Permission> permissionslist) {
+        this.permissionslist = permissionslist;
+    }
 
     public Integer getId() {
         return id;

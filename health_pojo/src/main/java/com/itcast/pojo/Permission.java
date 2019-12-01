@@ -14,6 +14,16 @@ public class Permission implements Serializable{
     private String description; // 描述
     private Set<Role> roles = new HashSet<Role>(0);
 
+    private Integer roleId;
+
+    public Integer getRoleId() {
+        return roleId;
+    }
+
+    public void setRoleId(Integer roleId) {
+        this.roleId = roleId;
+    }
+
     public Integer getId() {
         return id;
     }
