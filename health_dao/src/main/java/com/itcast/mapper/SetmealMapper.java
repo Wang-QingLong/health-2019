@@ -3,6 +3,7 @@ package com.itcast.mapper;
 import com.github.pagehelper.Page;
 import com.itcast.pojo.CheckGroup;
 import com.itcast.pojo.CheckItem;
+import com.itcast.pojo.HotSetmeal;
 import com.itcast.pojo.Setmeal;
 import org.apache.ibatis.annotations.Param;
 
@@ -108,4 +109,9 @@ public interface SetmealMapper {
      * @return
      */
     List<CheckItem> findCheckItemsByCheckGroupIds(@Param("ids") List<Integer> ids);
+
+    /**获取热门套餐
+     * @return
+     */
+    List<HotSetmeal> findHotSetmeal();
 }

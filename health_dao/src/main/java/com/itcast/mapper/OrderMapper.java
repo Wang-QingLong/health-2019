@@ -57,5 +57,43 @@ public interface OrderMapper {
      */
     Map findById(@Param("orderId") Integer orderId);
 
+    /**今日预约数
+     * @param reportDate
+     * @return
+     */
+    Integer findTodayOrderNumber(@Param("reportDate") String reportDate);
+
+    /**今日到诊数
+     * @param reportDate
+     * @return
+     */
+    Integer findTodayVisitsNumber(@Param("reportDate") String reportDate);
+
+    /**本周预约数
+     * @param beginOfWeek
+     * @param endOfWeek
+     * @return
+     */
+    Integer findThisWeekOrderNumber(@Param("beginOfWeek") String beginOfWeek, @Param("endOfWeek") String endOfWeek);
+
+    /**本周到诊数
+     * @param beginOfWeek
+     * @param reportDate
+     * @return
+     */
+    Integer findThisWeekVisitsNumber(@Param("beginOfWeek") String beginOfWeek, @Param("reportDate") String reportDate);
+
+    /**本月预约数
+     * @param beginofmonth
+     * @param endofmonth
+     * @return
+     */
+    Integer findThisMonthOrderNumber(@Param("beginofmonth") String beginofmonth, @Param("endofmonth") String endofmonth);
+
+    /**本月到诊数
+     * @param beginOfMonth
+     * @return
+     */
+    Integer findThisMonthVisitsNumbe(@Param("beginOfMonth") String beginOfMonth);
 }
 

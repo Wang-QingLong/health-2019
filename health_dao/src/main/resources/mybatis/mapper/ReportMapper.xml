@@ -19,7 +19,21 @@
            regTime <= #{month}
 
    ]]>
+    </select>
 
+    <!--查询套餐占比-->
+    <select id="findSetmealReport" resultType="java.util.Map">
+         SELECT
+	 s.name,
+	 count( * )
+    value
 
+   FROM
+	t_order o,
+	t_setmeal s
+  WHERE
+	o.setmeal_id = s.id
+  GROUP BY
+	s.NAME
     </select>
 </mapper>

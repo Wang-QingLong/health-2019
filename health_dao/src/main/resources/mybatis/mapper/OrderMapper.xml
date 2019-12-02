@@ -76,4 +76,28 @@
 	o.id = #{orderId}
 	AND s.sid =0
     </select>
+    <!--今日预约数-->
+    <select id="findTodayOrderNumber" resultType="java.lang.Integer">
+        select count(*) from t_order where orderDate=#{reportDate}
+    </select>
+    <!--今日到诊数-->
+    <select id="findTodayVisitsNumber" resultType="java.lang.Integer">
+        select count(*) from t_order where orderDate=#{reportDate} and orderStatus='已到诊'
+    </select>
+    <!--    本周预约数-->
+    <select id="findThisWeekOrderNumber" resultType="java.lang.Integer">
+  select count(*) from t_order where orderDate BETWEEN #{beginOfWeek} and #{endOfWeek}
+    </select>
+<!--    本周到诊数-->
+    <select id="findThisWeekVisitsNumber" resultType="java.lang.Integer">
+        select count(*) from t_order where orderStatus='已到诊' and orderDate >= #{beginOfWeek}
+    </select>
+    <!--本月预约数-->
+    <select id="findThisMonthOrderNumber" resultType="java.lang.Integer">
+        select count(*) from t_order where orderDate BETWEEN #{beginofmonth} and #{endofmonth}
+    </select>
+<!--    本月到诊数-->
+    <select id="findThisMonthVisitsNumbe" resultType="java.lang.Integer">
+         select count(*) from t_order where orderStatus='已到诊' and orderDate >= #{beginOfMonth}
+    </select>
 </mapper>

@@ -124,4 +124,23 @@
             #{id}
         </foreach>
     </select>
+<!--获取热门套餐-->
+    <select id="findHotSetmeal" resultType="com.itcast.pojo.HotSetmeal">
+         SELECT
+	 s.name,
+	 count( * )
+  setmeal_count
+	,
+	count( * ) / ( SELECT count( * ) FROM t_order ) proportion
+ FROM
+	  t_order o,
+	  t_setmeal s
+ WHERE
+	  o.setmeal_id = s.id
+ GROUP BY
+	 s.id
+ ORDER BY
+ setmeal_count
+ DESC
+    </select>
 </mapper>

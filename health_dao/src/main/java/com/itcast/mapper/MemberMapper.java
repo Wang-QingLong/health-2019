@@ -35,4 +35,28 @@ public interface MemberMapper {
      */
     void updateName(@Param("id") Integer id, @Param("name") String name);
 
+    /**今日新增会员数
+     * @param reportDate
+     * @return
+     */
+    Integer findTodayNewMember(@Param("reportDate") String reportDate);
+
+    /**获取总会员数量
+     * @return
+     */
+    Integer findTotalMember();
+
+    /**本周新增会员量
+     * @param beginOfWeek
+     * @param reportDate
+     * @return
+     */
+    Integer findThisWeekNewMember(@Param("beginOfWeek") String beginOfWeek, @Param("reportDate") String reportDate);
+
+    /**本月新增会员数
+     * @param beginOfMonth
+     * @param reportDate
+     * @return
+     */
+    Integer findThisMonthNewMember(@Param("beginOfMonth") String beginOfMonth, @Param("reportDate") String reportDate);
 }

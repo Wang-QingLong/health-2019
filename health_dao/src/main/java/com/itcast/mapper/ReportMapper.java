@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -21,4 +22,10 @@ public interface ReportMapper {
     Integer findMemberCountByMonths(@Param("month") String month);
 
 
+    /**
+     * 查询套餐占比
+     *
+     * @return
+     */
+    List< Map<String,Object>> findSetmealReport();
 }

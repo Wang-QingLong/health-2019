@@ -34,5 +34,26 @@
    WHERE
 	phoneNumber = #{telephone}
     </select>
+    <!--今日新增会员数-->
+    <select id="findTodayNewMember" resultType="java.lang.Integer">
+  SELECT
+	count( * )
+  FROM
+	t_member
+  WHERE
+	regTime = #{reportDate}
+    </select>
+    <!--获取总的会员数量-->
+    <select id="findTotalMember" resultType="java.lang.Integer">
+        select count(*) from t_member
+    </select>
+    <!--本周新增会员数量-->
+    <select id="findThisWeekNewMember" resultType="java.lang.Integer">
+	select count(*) from t_member where regTime BETWEEN #{beginOfWeek} and #{reportDate}
+    </select>
+    <!--本月新增会员数-->
+    <select id="findThisMonthNewMember" resultType="java.lang.Integer">
+     select count(*) from t_member where regTime BETWEEN #{beginOfMonth} and #{reportDate}
+    </select>
 
 </mapper>

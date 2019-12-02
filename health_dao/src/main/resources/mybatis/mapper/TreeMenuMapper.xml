@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--配置接口dao的全限定类名-->
+<mapper namespace="com.itcast.mapper.TreeMenuMapper">
+
+
+    <!--查询一级菜单-->
+    <select id="findFirstMenus" resultType="com.itcast.pojo.Menu">
+         SELECT
+	 id,
+	 NAME label
+  FROM
+ 	t_menu
+  WHERE
+	parentMenuId is NULL
+    </select>
+    <!--查询子级菜单-->
+    <select id="findChildrensMenus" resultType="com.itcast.pojo.Menu">
+   SELECT
+	id,
+	NAME label
+  FROM
+	t_menu
+  WHERE
+	parentMenuId =#{id}
+    </select>
+</mapper>
