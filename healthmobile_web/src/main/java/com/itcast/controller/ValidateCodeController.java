@@ -6,13 +6,11 @@ import com.google.code.kaptcha.impl.DefaultKaptcha;
 import com.itcast.constant.MessageConstant;
 import com.itcast.constant.RedisMessageConstant;
 import com.itcast.entity.Result;
+import com.itcast.utils.JedisUtil;
 import com.itcast.utils.SMSUtils;
 import com.itcast.utils.ValidateCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
@@ -20,6 +18,7 @@ import javax.imageio.ImageIO;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.image.BufferedImage;
+import java.util.Map;
 
 /**
  * @version V1.0
@@ -34,6 +33,10 @@ public class ValidateCodeController {
     DefaultKaptcha defaultKaptcha;
     @Autowired
     private JedisPool jedisPool;
+
+
+    @Autowired
+    private JedisUtil jedisUtil;
 
     /**
      * 获取图片验证码
@@ -63,11 +66,24 @@ public class ValidateCodeController {
     /**
      * 登陆页面发送4位数的手机验证码
      *
-     * @param telephone
+     * @param map
      * @return
      */
     @RequestMapping("send4Login")
-    public Result send4Login(String telephone) {
+    public Result send4Login(@RequestBody Map map) {
+        String telephone = (String) map.get("telephone");
+
+        //先检验图片验证码是否正确
+        //获取页面输入的图片验证码
+        String code = (String) map.get("imgCode");
+        //获取redis内的图片文字验证码
+        //获取key
+        String o = (String) map.get("deviceId");
+        //获取redis内的value
+        String validateCode_ = jedisUtil.get(o);
+        if (!code.equals(validateCode_)) {
+            return  Result.error("请输入正确的图片验证码");
+        }
 
         //随机获取验证码
         String param = ValidateCodeUtils.generateValidateCode4String(4);

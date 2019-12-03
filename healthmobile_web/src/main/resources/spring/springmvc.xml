@@ -14,6 +14,7 @@
           http://www.springframework.org/schema/context
           http://www.springframework.org/schema/context/spring-context.xsd">
 
+    <!--以上配置定义了 @responsebody 支持的返回类型， json对空键值的处理方式 和 统一的日期返回格式-->
     <mvc:annotation-driven>
         <mvc:message-converters register-defaults="true">
             <bean class="com.alibaba.fastjson.support.spring.FastJsonHttpMessageConverter">
@@ -27,12 +28,30 @@
             </bean>
         </mvc:message-converters>
     </mvc:annotation-driven>
+    
+    <!--配置axios的拦截器-->
+    <mvc:interceptors>
+        <mvc:interceptor>
+           <!--拦截所有的controller请求-->
+            <mvc:mapping path="/**"/>
+            <!--不拦截的请求路径-->
+               <!--发送验证码的请求-->
+            <mvc:exclude-mapping path="/validateCode/**"/>
+                <!--登陆页面-->
+            <mvc:exclude-mapping path="/login/check.do"/>
+             <!--自定义的拦截类-->
+            <bean class="com.itcast.interceptor.LoginHandlerInterceptor"/>
+        </mvc:interceptor>
+    </mvc:interceptors>
+    
+    
+    
     <!-- 指定应用名称 -->
     <dubbo:application name="healthmobile_web" />
     <!--指定服务注册中心地址-->
     <dubbo:registry address="zookeeper://127.0.0.1:2181"/>
     <!--批量扫描-->
-    <dubbo:annotation package="com.itcast.controller,com.itcast.utils" />
+    <dubbo:annotation package="com.itcast.controller,com.itcast.utils"/>
     <!--
         超时全局设置 10分钟
         check=false 不检查服务提供方，开发阶段建议设置为false

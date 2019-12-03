@@ -43,6 +43,7 @@ public class UserLoginController {
      */
     @RequestMapping("check")
     public Result check(HttpServletRequest request, HttpServletResponse response, @RequestBody Map map) {
+
         /*获取页面输入的验证码*/
         String validateCode = (String) map.get("validateCode");
         /*获取redis存入的验证码*/
@@ -66,9 +67,9 @@ public class UserLoginController {
              //采用redis+token的方式，为了提升用户的体验
             //使用uuid生成token
             String token = UUID.randomUUID().toString();
-//将用户信息存入redis
+            //将用户信息存入redis
             jedisUtil.setex(token, 60 * 60 * 24 * 15, JSON.toJSONString(member));
-//将token返回给前端
+            //将token返回给前端
             return Result.success(token, "恭喜登陆成功！");
         }
 
