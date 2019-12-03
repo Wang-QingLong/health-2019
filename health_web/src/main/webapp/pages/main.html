@@ -68,7 +68,7 @@
                     </el-menu>
                 </el-aside>
                 <el-container>
-                    <iframe name="right" class="el-main" src="report_business.html" width="100%" height="580px" frameborder="0"></iframe>
+                    <iframe name="right" class="el-main" src="report_member.html" width="100%" height="580px" frameborder="0"></iframe>
                 </el-container>
             </el-container>
         </el-container>
@@ -89,7 +89,14 @@
                     "path": "1",
                     "title": "工作台",
                     "icon":"fa-dashboard",
-                    "children": []
+                    "children": [
+                        {
+                            "path": "/1-1",
+                            "title": "工作菜单",
+                            "linkUrl":"treemenu.html",
+                            "children":[]
+                        },
+                    ]
                 },
                 {
                     "path": "2",
@@ -102,6 +109,7 @@
                             "linkUrl":"member.html",
                             "children":[]
                         },
+
                         {
                             "path": "/2-2",
                             "title": "体检上传",

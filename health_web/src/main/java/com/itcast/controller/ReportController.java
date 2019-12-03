@@ -7,9 +7,11 @@ import com.alibaba.dubbo.config.annotation.Reference;
 import com.itcast.entity.Result;
 import com.itcast.pojo.HotSetmeal;
 import com.itcast.pojo.ReportData;
+import com.itcast.pojo.ReportMemberParams;
 import com.itcast.service.ReportService;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -37,15 +39,28 @@ public class ReportController {
      * @return
      */
     @RequestMapping("getMemberReport")
-    public Result getMemberReport() {
-        //封装需要的数据
+    public Result getMemberReport(@RequestBody(required = false) ReportMemberParams reportMemberParams) {
+
+        int count = 12;
+
+        Date end;
+        //如果前端输入时间日期
+        if (reportMemberParams.getStart()!=null&&reportMemberParams.getEnd()!=null) {
+            Date start = reportMemberParams.getStart();
+             end = reportMemberParams.getEnd();
+            count = (int) (int) DateUtil.betweenMonth(start, end, true)+1;
+        }else{
+            end = DateTime.now();
+        }
+        //封装需要的数据int
         HashMap<String, Object> map = new HashMap<>();
-        //获取前一年的月份时间
-        DateTime dateTime = DateUtil.offsetMonth(new Date(), -12);
+        //如果没传就获取前一年的月份时间,如果传了就获取当前时间范围
+        DateTime dateTime = DateUtil.offsetMonth(end, -count);
+
 
         /*为了构造  ["2018-01","2018-02"]这样的结构，设计list结构  */
         ArrayList<String> months = new ArrayList<>();
-        for (int i = 1; i <= 12; i++) {
+        for (int i = 1; i <= count; i++) {
             //往后偏移一个月
             //转换成yyyy--MM月份
             String month = DateUtil.offsetMonth(dateTime, i).toString("yyyy-MM");
